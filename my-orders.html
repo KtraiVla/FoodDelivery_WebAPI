@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./img/Logo_icon.png">
+    <link rel="stylesheet" href="./css/KhachHang.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Đơn hàng của tôi - DA FOOD</title>
+</head>
+<body>
+    <div class="header">
+        <div class="header_top">
+            <div class="container">
+                <div class="header_top_left">
+                    <div class="header_logo">
+                        <a href="index.html"><img class="Logo_icon" src="./img/Logo_icon.png"></a>
+                    </div>
+                </div>
+                <div class="header_top_middle">
+                    <form action="" class="form_search">
+                        <span class="search_btn">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input autocomplete="off" type="text" placeholder="Tìm kiếm món ăn">
+                        <button>
+                            <i class="fa-solid fa-filter"></i>
+                            Lọc
+                        </button>
+                    </form>
+                </div>
+                <div class="header_top_right">
+                    <ul class="header_list">
+                        <li class="account">
+                            <i class="fa-solid fa-user"></i>
+                            <div class="text">
+                                <span id="text_dndk" class="text_dndk">Đăng nhập / Đăng ký</span>
+                                <span id="text_tk" class="text_tk">Tài khoản<i class="fa-solid fa-caret-down"></i></span>
+                            </div>
+                            <ul class="account_manager">
+                                <li class="no_acc"><a href="sign_in.html"><i class="fa-solid fa-right-to-bracket"></i> Đăng nhập</a></li>
+                                <li class="no_acc"><a href="sign_up.html"><i class="fa-solid fa-user-plus"></i> Đăng ký</a></li>
+                                <li id="admin" class="yes_acc"><a href="admin.html"><i class="fa-solid fa-gear"></i> Quản lý cửa hàng</a></li>
+                                <li id="nhanvien" class="yes_acc"><a href="NhaHang.html"><i class="fa-solid fa-gear"></i> Quản lý nhà hàng</a></li>
+                                <li id="shipper" class="yes_acc"><a href="Shipper.html"><i class="fa-solid fa-gear"></i> Shipper</a></li>
+                                <li class="yes_acc"><a href="my-orders.html"><i class="fa-solid fa-clipboard-list"></i> Đơn hàng của tôi</a></li>
+                                <li class="yes_acc"><a id="dang_xuat" href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                        <li class="cart">
+                            <a href="cart.html">
+                                <i class="fa-solid fa-cart-shopping">
+                                    <div id="cart_number_items">0</div>
+                                </i>
+                                <span>Giỏ hàng</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="container">
+            <div class="orders-page-header">
+                <h2><i class="fa-solid fa-clipboard-list"></i> Đơn hàng của tôi</h2>
+                <p>Theo dõi tất cả đơn hàng của bạn</p>
+            </div>
+
+            <div class="orders-filter-tabs">
+                <button class="filter-tab active" data-filter="all" onclick="filterMyOrders('all')">
+                    <i class="fa-solid fa-list"></i> Tất cả
+                </button>
+                <button class="filter-tab" data-filter="new" onclick="filterMyOrders('new')">
+                    <i class="fa-solid fa-clock"></i> Đơn mới
+                </button>
+                <button class="filter-tab" data-filter="confirmed" onclick="filterMyOrders('confirmed')">
+                    <i class="fa-solid fa-check"></i> Đã xác nhận
+                </button>
+                <button class="filter-tab" data-filter="preparing" onclick="filterMyOrders('preparing')">
+                    <i class="fa-solid fa-utensils"></i> Đang chuẩn bị
+                </button>
+                <button class="filter-tab" data-filter="ready" onclick="filterMyOrders('ready')">
+                    <i class="fa-solid fa-check-circle"></i> Sẵn sàng giao
+                </button>
+                <button class="filter-tab" data-filter="assigned" onclick="filterMyOrders('assigned')">
+                    <i class="fa-solid fa-truck"></i> Đang giao
+                </button>
+                <button class="filter-tab" data-filter="completed" onclick="filterMyOrders('completed')">
+                    <i class="fa-solid fa-check-double"></i> Hoàn thành
+                </button>
+                <button class="filter-tab" data-filter="cancelled" onclick="filterMyOrders('cancelled')">
+                    <i class="fa-solid fa-times-circle"></i> Đã hủy
+                </button>
+            </div>
+
+            <div id="orders-list" class="orders-list-container">
+                <!-- Đơn hàng sẽ được load từ JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div id="order-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3><i class="fa-solid fa-receipt"></i> Chi tiết đơn hàng</h3>
+            <div id="order-detail-content">
+                <!-- Nội dung sẽ được load động -->
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div class="footer_top">
+                <div class="footer_logo">
+                    <img src="./img/Logo_icon.png" alt="DA FOOD">
+                </div>
+                <div class="footer_email">
+                    <div class="footer_email_text">
+                        <h3>Đăng ký nhận tin</h3>
+                        <p>Nhận thông tin mới nhất từ chúng tôi</p>
+                    </div>
+                    <form action="" class="footer_form">
+                        <input autocomplete="off" type="email" placeholder="Nhập email của bạn" required>
+                        <button type="submit">Đăng ký <i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer_content">
+                <div class="widget_row">
+                    <div class="widget_row_col">
+                        <h3 class="widget_title">Về chúng tôi</h3>
+                        <div class="widget_row_col_content">
+                            <p>DA Food là thương hiệu được thành lập vào năm 2025 với tiêu chí đặt chất lượng sản phẩm lên hàng đầu.</p>
+                        </div>
+                        <div class="widget_social">
+                            <div class="widget_social_item">
+                                <a href="">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </div>
+                            <div class="widget_social_item">
+                                <a href="">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                            <div class="widget_social_item">
+                                <a href="">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                            <div class="widget_social_item">
+                                <a href="">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget_row_col">
+                        <h3 class="widget_title">Liên kết</h3>
+                        <ul class="widget_contact">
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Về chúng tôi</span>
+                                </a>
+                            </li>
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Thực đơn</span>
+                                </a>
+                            </li>
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Điều khoản</span>
+                                </a>
+                            </li>
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Liên hệ</span>
+                                </a>
+                            </li>
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Tin tức</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="widget_row_col">
+                        <h3 class="widget_title">Thực đơn</h3>
+                        <ul class="widget_contact">
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Điểm tâm</span>
+                                </a>
+                            </li>
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Món chay</span>
+                                </a>
+                            </li>
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Món mặn</span>
+                                </a>
+                            </li>
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Nước uống</span>
+                                </a>
+                            </li>
+                            <li class="widget_contact_item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Tráng miệng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="widget_row_col">
+                        <h3 class="widget_title">Liên hệ</h3>
+                        <div class="contact">
+                            <div class="contact_item">
+                                <div class="contact_item_icon">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div class="contact_content">
+                                    <span>La Tiến, Tống Trân,</span><br>
+                                    <span>Phù Cừ, Hưng Yên</span>
+                                </div>
+                            </div>
+                            <div class="contact_item">
+                                <div class="contact_item_icon">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div class="contact_content contact_item_phone">
+                                    <span>0123 456 789</span>
+                                    <br>
+                                    <span>0987 654 321</span>
+                                </div>
+                            </div>
+                            <div class="contact_item">
+                                <div class="contact_item_icon">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div class="contact_content contact_item_email">
+                                    <span>dafood@gmail.com</span><br>
+                                    <span>da2k5@gmail.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <script src="./js/init_sample_data.js"></script>
+    <script src="./js/dn_dk.js"></script>
+    <script src="./js/restaurants.js"></script>
+    <script src="./js/my-orders.js"></script>
+    <script>
+        // Initialize header
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initPage === 'function') {
+                initPage();
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
