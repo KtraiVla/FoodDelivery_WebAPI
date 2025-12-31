@@ -44,3 +44,4 @@ appsettings.Development.json
 Thumbs.db
 .DS_Store
 /QLGiaoHang_API/QLGiaoHang_API/Shared/DTOs/ApiResponse.cs
+/QLGiaoHang_API/QLGiaoHang_API/Shared/Helpers/SqlHelper.cs
