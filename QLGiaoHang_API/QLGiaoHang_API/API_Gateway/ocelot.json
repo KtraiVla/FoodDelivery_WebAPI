@@ -2,7 +2,7 @@
   "Routes": [
     // 1. Cấu hình cho AuthService (Cổng 44338)
     {
-      "DownstreamPathTemplate": "/api/values/{everything}",
+      "DownstreamPathTemplate": "/api/auth/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
