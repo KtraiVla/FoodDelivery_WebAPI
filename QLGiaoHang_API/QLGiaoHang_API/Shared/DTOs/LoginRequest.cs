@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs
 {
-    internal class LoginRequest
+    public class LoginRequest
     {
+        public string Username {  get; set; }
+        public string MatKhau {  get; set; }
     }
 }
