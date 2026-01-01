@@ -14,3 +14,5 @@ namespace Shared.Enums
         Admin = 2005
     }
 }
+
+
