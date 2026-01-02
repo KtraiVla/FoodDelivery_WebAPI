@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 namespace AuthService.DTOs
 {
-    public class RegisterRequest
+    public class RegisterRequest :IValidatableObject
     {
         [Required(ErrorMessage ="Tên đăng nhập không được để trống")]
         public string Username { get; set; }

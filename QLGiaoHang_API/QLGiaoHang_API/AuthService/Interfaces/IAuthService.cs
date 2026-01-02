@@ -8,6 +8,6 @@ namespace AuthService.Interfaces
         (int ResultCode, string Message) Register(RegisterRequest request);
 
         // Đăng nhập: Trả về UserDto (hoặc null nếu sai)
-        UserDto Login(LoginRequest request);
+        UserDto? Login(LoginRequest request);
     }
 }

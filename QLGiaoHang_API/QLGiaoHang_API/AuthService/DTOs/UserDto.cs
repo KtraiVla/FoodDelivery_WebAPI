@@ -12,8 +12,8 @@
 
         // thông tin riêng
         public int? MaNhaHang { get; set; }
-        public string? DiaChi { get; set; }
-        public string? SoDienThoai { get; set; }
-        public string? BienSoXe { get; set; }
+        public string DiaChi { get; set; }
+        public string SoDienThoai { get; set; }
+        public string BienSoXe { get; set; }
     }
 }
