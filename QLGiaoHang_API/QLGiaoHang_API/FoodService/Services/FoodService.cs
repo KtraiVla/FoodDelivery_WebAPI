@@ -39,6 +39,23 @@ namespace FoodService.Services
 
             return Task.FromResult(list);
         }
+        // Thêm nhà hàng
+        public Task<bool> CreateNhaHang(NhaHang nhaHang)
+        {
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@TenNhaHang", nhaHang.TenNhaHang),
+                new SqlParameter("@DiaChi", nhaHang.DiaChi),
+                new SqlParameter("@SoDienThoai", nhaHang.SoDienThoai),
+                new SqlParameter("@HinhAnh", nhaHang.HinhAnh),
+                new SqlParameter("@MinOrder", nhaHang.MinOrder),
+                new SqlParameter("@MaCode", nhaHang.Macode)
+            };
+
+            int result = _helper.ExecuteNonQuery("sp_ThemNhaHang", parameters);
+
+            return Task.FromResult(result > 0);
+        }
 
         //public Task<NhaHang?> GetNhaHangById(int maNhaHang)
         //{
@@ -71,8 +88,8 @@ namespace FoodService.Services
         {
             SqlParameter[] parameters =
             {
-        new SqlParameter("@MaNhaHang", maNhaHang)
-    };
+                new SqlParameter("@MaNhaHang", maNhaHang)
+            };
 
             DataTable dt = _helper.ExecuteQuery("dbo.sp_GetNhaHangById", parameters);
 
@@ -187,6 +204,28 @@ namespace FoodService.Services
                 await Task.Run(() =>
                 {
                     _helper.ExecuteNonQuery("sp_SuaMonAn", parameters);
+                });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        // Xóa món ăn
+        public async Task<bool> Delete(int maMonAn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                new SqlParameter("@MaMonAn", maMonAn)
+            };
+
+                await Task.Run(() =>
+                {
+                    _helper.ExecuteNonQuery("sp_XoaMonAn", parameters);
                 });
 
                 return true;

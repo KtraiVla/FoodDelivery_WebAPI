@@ -6,6 +6,9 @@ namespace FoodService.Interfaces
         // ===== NHÀ HÀNG =====
         Task<List<NhaHang>> GetAllNhaHang();
         Task<NhaHang?> GetNhaHangById(int maNhaHang);
+        Task<bool> CreateNhaHang(NhaHang nhaHang);
+        Task<bool> UpdateNhaHang(NhaHang nhaHang);
+
 
         // ===== DANH MỤC =====
         Task<List<DanhMuc>> GetAllDanhMuc();
@@ -18,5 +21,8 @@ namespace FoodService.Interfaces
 
         Task<bool> Create(MonAn monAn);
         Task<bool> Update(MonAn monAn);
+        Task<bool> Delete(int maMonAn);
+        
+
     }
 }

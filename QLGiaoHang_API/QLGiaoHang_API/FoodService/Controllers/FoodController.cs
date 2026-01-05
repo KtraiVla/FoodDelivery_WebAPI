@@ -41,11 +41,26 @@ namespace FoodService.Controllers
             return Ok(result);
         }
 
+        // Thêm nhà hàng
+        [HttpPost("Create-nhahang")]
+        public async Task<IActionResult> CreateNhaHang([FromBody] NhaHang nhaHang)
+        {
+            if (nhaHang == null)
+                return BadRequest("Dữ liệu không hợp lệ");
+
+            var result = await _foodService.CreateNhaHang(nhaHang);
+
+            if (!result)
+                return StatusCode(500, "Thêm nhà hàng thất bại");
+
+            return Ok("Thêm nhà hàng thành công");
+        }
+
         // ----------------- DANH MỤC -----------------
 
-        
+
         /// Lấy tất cả danh mục
-       
+
         [HttpGet("danhmuc")]
         public async Task<IActionResult> GetAllDanhMuc()
         {
@@ -100,7 +115,7 @@ namespace FoodService.Controllers
         }
 
         // Thêm món ăn
-        [HttpPost("monan")]
+        [HttpPost("Create-MonAn")]
         public async Task<IActionResult> Create([FromBody] MonAn monAn)
         {
             if (monAn == null)
@@ -114,7 +129,7 @@ namespace FoodService.Controllers
             return Ok("Thêm món ăn thành công");
         }
         // sửa món ăn
-        [HttpPut("monan")]
+        [HttpPut("Update-MonAn")]
         public async Task<IActionResult> Update([FromBody] MonAn monAn)
         {
             if (monAn == null || monAn.MaMonAn <= 0)
@@ -126,6 +141,21 @@ namespace FoodService.Controllers
                 return StatusCode(500, "Sửa món ăn thất bại");
 
             return Ok("Sửa món ăn thành công");
+        }
+
+        // Xóa món ăn
+        [HttpDelete("Delete-MonAn/{maMonAn}")]
+        public async Task<IActionResult> Delete(int maMonAn)
+        {
+            if (maMonAn <= 0)
+                return BadRequest("Mã món ăn không hợp lệ");
+
+            var result = await _foodService.Delete(maMonAn);
+
+            if (!result)
+                return StatusCode(500, "Xóa món ăn thất bại");
+
+            return Ok("Xóa món ăn thành công");
         }
     }
 }
