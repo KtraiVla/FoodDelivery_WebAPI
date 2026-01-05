@@ -1,7 +1,7 @@
 ﻿using AuthService.DTOs;
 using AuthService.Interfaces;
-using Shared.Helpers;
 using Microsoft.Data.SqlClient;
+using Shared.Helpers;
 using System.Data; 
 
 namespace AuthService.Services
@@ -49,6 +49,36 @@ namespace AuthService.Services
             }
 
             return null; 
+        }
+
+        public  (bool Success, string Message) UpdateProfile(int userId, UpdateProfileRepuest request)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@MaTK", userId),
+        
+                 // Nếu user không nhập (null) hoặc nhập chuỗi rỗng ("") -> Gửi DBNull xuống SQL
+                new SqlParameter("@HoTen", string.IsNullOrEmpty(request.HoTen) ? DBNull.Value : request.HoTen),
+
+                new SqlParameter("@SoDienThoai", string.IsNullOrEmpty(request.SoDienThoai) ? DBNull.Value : request.SoDienThoai),
+
+                new SqlParameter("@DiaChi", string.IsNullOrEmpty(request.DiaChi) ? DBNull.Value : request.DiaChi)
+            }; 
+            
+            try
+            {
+                DataTable dt = _helper.ExecuteQuery("sp_CapNhatProfile", parameters);
+                if(dt.Rows.Count > 0)
+                {
+                    return (true, "Cập nhật hồ sơ thành công");
+                }  
+            }
+            catch (Exception ex)
+            {
+                return(false, "Lỗi server: " + ex.Message);
+            }
+
+            return (false, "Cập nhật trạng thái thất bại");
         }
     }
 }

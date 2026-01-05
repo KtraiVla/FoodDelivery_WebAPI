@@ -3,6 +3,7 @@ using Shared.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using AuthService.DTOs;
 
 namespace AuthService.Controllers
 {
@@ -39,6 +40,33 @@ namespace AuthService.Controllers
             }
 
             return NotFound(ApiResponse.Fail("Không tìm thấy thông tin hồ sơ"));
+        }
+                
+        [HttpPut("profile")]
+        public IActionResult UpdateProfile([FromBody] UpdateProfileRepuest repuest)
+        {
+            var userIdClaim = User.FindFirst("MaTK") ?.Value;   
+            if(string.IsNullOrEmpty(userIdClaim))
+            {
+                return Unauthorized(ApiResponse.Fail("Bạn cần đăng nhập"));
+            }
+
+            int userId = int.Parse(userIdClaim);
+            
+            if(string.IsNullOrEmpty(repuest.HoTen))
+            {
+                return BadRequest(ApiResponse.Fail("Họ tên không được để trống"));
+            }
+
+            var result = _accountService.UpdateProfile(userId, repuest);
+            if (result.Success)
+            {
+                return Ok(ApiResponse.Ok(null, result.Message));
+            }
+            else
+            {
+                return BadRequest(ApiResponse.Fail(result.Message));
+            }
         }
     }
 }
