@@ -1,4 +1,5 @@
-﻿using FoodService.Interfaces;
+﻿using FoodService.DTOs;
+using FoodService.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -96,6 +97,35 @@ namespace FoodService.Controllers
                 return NotFound("Không tìm thấy món ăn");
 
             return Ok(result);
+        }
+
+        // Thêm món ăn
+        [HttpPost("monan")]
+        public async Task<IActionResult> Create([FromBody] MonAn monAn)
+        {
+            if (monAn == null)
+                return BadRequest("Dữ liệu không hợp lệ");
+
+            var result = await _foodService.Create(monAn);
+
+            if (!result)
+                return StatusCode(500, "Thêm món ăn thất bại");
+
+            return Ok("Thêm món ăn thành công");
+        }
+        // sửa món ăn
+        [HttpPut("monan")]
+        public async Task<IActionResult> Update([FromBody] MonAn monAn)
+        {
+            if (monAn == null || monAn.MaMonAn <= 0)
+                return BadRequest("Dữ liệu không hợp lệ");
+
+            var result = await _foodService.Update(monAn);
+
+            if (!result)
+                return StatusCode(500, "Sửa món ăn thất bại");
+
+            return Ok("Sửa món ăn thành công");
         }
     }
 }

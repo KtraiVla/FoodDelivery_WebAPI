@@ -15,5 +15,8 @@ namespace FoodService.Interfaces
         Task<List<MonAn>> GetMonAnByDanhMuc(int maDanhMuc, int MaNhaHang);
         Task<List<MonAn>> GetMonAnByNhaHang(int maNhaHang);
         Task<MonAn?> GetMonAnById(int maMonAn);
+
+        Task<bool> Create(MonAn monAn);
+        Task<bool> Update(MonAn monAn);
     }
 }

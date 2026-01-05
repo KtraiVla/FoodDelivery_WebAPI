@@ -138,7 +138,64 @@ namespace FoodService.Services
             return Task.FromResult(list);
         }
 
-        // ===================== MÓN ĂN =====================
+        // ------------------- MÓN ĂN ------------------
+
+        //Thêm món ăn
+        public async Task<bool> Create(MonAn monAn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                new SqlParameter("@TenMon", monAn.TenMon),
+                new SqlParameter("@Gia", monAn.Gia),
+                new SqlParameter("@MoTa", monAn.MoTa),
+                new SqlParameter("@HinhAnh", monAn.HinhAnh),
+                new SqlParameter("@MaDanhMuc", monAn.MaDanhMuc),
+                new SqlParameter("@MaNhaHang", monAn.MaNhaHang)
+            };
+
+                await Task.Run(() =>
+                {
+                    _helper.ExecuteNonQuery("sp_ThemMonAn", parameters);
+                });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Sửa món ăn
+        public async Task<bool> Update(MonAn monAn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                new SqlParameter("@MaMonAn", monAn.MaMonAn),
+                new SqlParameter("@TenMon", monAn.TenMon),
+                new SqlParameter("@Gia", monAn.Gia),
+                new SqlParameter("@MoTa", monAn.MoTa),
+                new SqlParameter("@HinhAnh", monAn.HinhAnh),
+                new SqlParameter("@MaDanhMuc", monAn.MaDanhMuc),
+                new SqlParameter("@MaNhaHang", monAn.MaNhaHang)
+            };
+
+                await Task.Run(() =>
+                {
+                    _helper.ExecuteNonQuery("sp_SuaMonAn", parameters);
+                });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         public Task<List<MonAn>> GetMonAnByDanhMuc(int maDanhMuc, int maNhaHang)
         {
