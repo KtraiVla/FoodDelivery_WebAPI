@@ -8,5 +8,7 @@
         public string SoDienThoai { get; set; }
         public string HinhAnh { get; set; }
         public int MinOrder { get; set; }
+
+        public string Macode {  get; set; }
     }
 }

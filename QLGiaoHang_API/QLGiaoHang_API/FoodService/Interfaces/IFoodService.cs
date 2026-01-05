@@ -1,18 +1,19 @@
 ﻿using FoodService.DTOs;
 namespace FoodService.Interfaces
 {
-    public class IFoodService
+    public interface IFoodService
     {
-        // 1. Nhà Hàng
+        // ===== NHÀ HÀNG =====
         Task<List<NhaHang>> GetAllNhaHang();
+        Task<NhaHang?> GetNhaHangById(int maNhaHang);
 
-        //2. Danh muc theo nha hang
-        Task<List<DanhMuc>> GetDanhMucByNhaHang(int MaNhaHang);
+        // ===== DANH MỤC =====
+        Task<List<DanhMuc>> GetAllDanhMuc();
+        Task<List<DanhMuc>> GetDanhMucByNhaHang(int maNhaHang);
 
-        //3. Món ăn theo danh mục
-        Task<List<MonAn>> GetMonAnByDanhMuc(int MaDanhMuc);
-
-        //4. Chi tiết món ăn
-        Task<MonAn> GetMonAnById(int MaMonAn);
+        // ===== MÓN ĂN =====
+        Task<List<MonAn>> GetMonAnByDanhMuc(int maDanhMuc, int MaNhaHang);
+        Task<List<MonAn>> GetMonAnByNhaHang(int maNhaHang);
+        Task<MonAn?> GetMonAnById(int maMonAn);
     }
 }
