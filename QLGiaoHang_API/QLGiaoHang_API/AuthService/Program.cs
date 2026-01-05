@@ -24,6 +24,8 @@ namespace AuthService
 
             // đăng ký AuthService
             builder.Services.AddScoped<IAuthService, AuthService.Services.AuthService>();
+            // đăng ký AccountService
+            builder.Services.AddScoped<IAccountService, AuthService.Services.AccountService>();
 
             var app = builder.Build();
 
