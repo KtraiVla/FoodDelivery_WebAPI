@@ -38,6 +38,7 @@ namespace Shared.Helpers
                 }
             }
         }
+ 
 
         // 2.Hàm ExecuteNonQuery --> Số dòng bị ảnh hường
         public int ExecuteNonQuery(string procedureName, SqlParameter[] parameters = null)
@@ -74,5 +75,9 @@ namespace Shared.Helpers
                 }
             }
         }
+
+       
+
+
     }
 }
