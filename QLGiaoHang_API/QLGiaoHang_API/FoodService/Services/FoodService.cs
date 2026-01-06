@@ -40,48 +40,37 @@ namespace FoodService.Services
             return Task.FromResult(list);
         }
         // Thêm nhà hàng
-        public Task<bool> CreateNhaHang(NhaHang nhaHang)
+       
+        public async Task<bool> CreateNhaHang(NhaHang nhaHang)
         {
-            SqlParameter[] parameters =
+            try
             {
-                new SqlParameter("@TenNhaHang", nhaHang.TenNhaHang),
-                new SqlParameter("@DiaChi", nhaHang.DiaChi),
-                new SqlParameter("@SoDienThoai", nhaHang.SoDienThoai),
-                new SqlParameter("@HinhAnh", nhaHang.HinhAnh),
-                new SqlParameter("@MinOrder", nhaHang.MinOrder),
-                new SqlParameter("@MaCode", nhaHang.Macode)
-            };
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@TenNhaHang", nhaHang.TenNhaHang),
+                    new SqlParameter("@DiaChi", nhaHang.DiaChi),
+                    new SqlParameter("@SoDienThoai", nhaHang.SoDienThoai),
+                    new SqlParameter("@HinhAnh", nhaHang.HinhAnh),
+                    new SqlParameter("@MinOrder", nhaHang.MinOrder),
+                    new SqlParameter("@MaCode", nhaHang.Macode)
+                };
 
-            int result = _helper.ExecuteNonQuery("sp_ThemNhaHang", parameters);
+                await Task.Run(() =>
+                {
+                    _helper.ExecuteNonQuery("sp_ThemNhaHang", parameters);
+                });
 
-            return Task.FromResult(result > 0);
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627 || ex.Number == 2601)
+                    throw new Exception("Tên nhà hàng đã tồn tại");
+
+                throw;
+            }
         }
 
-        //public Task<NhaHang?> GetNhaHangById(int maNhaHang)
-        //{
-        //    SqlParameter[] parameters =
-        //    {
-        //        new SqlParameter("@MaNhaHang", maNhaHang)
-        //    };
-
-        //    DataTable dt = _helper.ExecuteQuery("sp_GetNhaHangById", parameters);
-
-        //    if (dt.Rows.Count == 0)
-        //        return Task.FromResult<NhaHang?>(null);
-
-        //    DataRow row = dt.Rows[0];
-
-        //    return Task.FromResult(new NhaHang
-        //    {
-        //        MaNhaHang = Convert.ToInt32(row["MaNhaHang"]),
-        //        TenNhaHang = row["TenNhaHang"].ToString(),
-        //        DiaChi = row["DiaChi"].ToString(),
-        //        SoDienThoai = row["SoDienThoai"].ToString(),
-        //        HinhAnh = row["HinhAnh"].ToString(),
-        //        MinOrder = Convert.ToInt32(row["MinOrder"]),
-        //        Macode = row["MaCode"].ToString()
-        //    });
-        //}
 
         // tìm nhà hàng
         public Task<NhaHang?> GetNhaHangById(int maNhaHang)
