@@ -318,5 +318,10 @@ namespace FoodService.Services
                 MaNhaHang = Convert.ToInt32(row["MaNhaHang"])
             });
         }
+
+        public Task<bool> UpdateNhaHang(NhaHang nhaHang)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
