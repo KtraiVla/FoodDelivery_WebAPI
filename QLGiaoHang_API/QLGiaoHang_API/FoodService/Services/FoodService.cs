@@ -336,6 +336,9 @@ namespace FoodService.Services
             });
         }
 
-        
+        public Task<bool> Update(NhaHang nhaHang)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
