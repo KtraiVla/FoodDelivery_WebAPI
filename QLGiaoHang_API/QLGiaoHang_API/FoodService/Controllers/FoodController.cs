@@ -20,7 +20,7 @@ namespace FoodService.Controllers
         
         /// Lấy danh sách tất cả nhà hàng
         
-        [HttpGet("nhahang")]
+        [HttpGet("GetAll-NhaHang")]
         public async Task<IActionResult> GetAllNhaHang()
         {
             var result = await _foodService.GetAllNhaHang();
@@ -30,7 +30,7 @@ namespace FoodService.Controllers
         
         /// Lấy thông tin nhà hàng theo ID
         
-        [HttpGet("nhahang/{maNhaHang}")]
+        [HttpGet("GetID-NhaHang/{maNhaHang}")]
         public async Task<IActionResult> GetNhaHangById(int maNhaHang)
         {
             var result = await _foodService.GetNhaHangById(maNhaHang);
