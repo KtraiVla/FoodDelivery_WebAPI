@@ -76,7 +76,7 @@ namespace FoodService.Controllers
 
         /// Lấy tất cả danh mục
 
-        [HttpGet("danhmuc")]
+        [HttpGet("GetAll-danhmuc")]
         public async Task<IActionResult> GetAllDanhMuc()
         {
             var result = await _foodService.GetAllDanhMuc();
