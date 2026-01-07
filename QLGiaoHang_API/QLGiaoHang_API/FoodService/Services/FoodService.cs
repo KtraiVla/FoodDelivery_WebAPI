@@ -71,6 +71,34 @@ namespace FoodService.Services
             }
         }
 
+        // Sửa nhà hàng
+        public async Task<bool> UpdateNhaHang(NhaHang nhaHang)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@TenNhaHang", nhaHang.TenNhaHang),
+                    new SqlParameter("@DiaChi", nhaHang.DiaChi),
+                    new SqlParameter("@SoDienThoai", nhaHang.SoDienThoai),
+                    new SqlParameter("@HinhAnh", nhaHang.HinhAnh),
+                    new SqlParameter("@MinOrder", nhaHang.MinOrder),
+                    new SqlParameter("@MaCode", nhaHang.Macode)
+            };
+
+                await Task.Run(() =>
+                {
+                    _helper.ExecuteNonQuery("sp_SuaMonAn", parameters);
+                });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
         // tìm nhà hàng
         public Task<NhaHang?> GetNhaHangById(int maNhaHang)
@@ -181,14 +209,14 @@ namespace FoodService.Services
             {
                 SqlParameter[] parameters =
                 {
-                new SqlParameter("@MaMonAn", monAn.MaMonAn),
-                new SqlParameter("@TenMon", monAn.TenMon),
-                new SqlParameter("@Gia", monAn.Gia),
-                new SqlParameter("@MoTa", monAn.MoTa),
-                new SqlParameter("@HinhAnh", monAn.HinhAnh),
-                new SqlParameter("@MaDanhMuc", monAn.MaDanhMuc),
-                new SqlParameter("@MaNhaHang", monAn.MaNhaHang)
-            };
+                    new SqlParameter("@MaMonAn", monAn.MaMonAn),
+                    new SqlParameter("@TenMon", monAn.TenMon),
+                    new SqlParameter("@Gia", monAn.Gia),
+                    new SqlParameter("@MoTa", monAn.MoTa),
+                    new SqlParameter("@HinhAnh", monAn.HinhAnh),
+                    new SqlParameter("@MaDanhMuc", monAn.MaDanhMuc),
+                    new SqlParameter("@MaNhaHang", monAn.MaNhaHang)
+                };
 
                 await Task.Run(() =>
                 {
@@ -308,9 +336,6 @@ namespace FoodService.Services
             });
         }
 
-        public Task<bool> UpdateNhaHang(NhaHang nhaHang)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
