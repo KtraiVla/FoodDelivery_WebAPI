@@ -118,7 +118,7 @@ namespace FoodService.Controllers
        
         /// Lấy chi tiết món ăn theo ID
         
-        [HttpGet("monan/{maMonAn}")]
+        [HttpGet("GetAll-monan/{maMonAn}")]
         public async Task<IActionResult> GetMonAnById(int maMonAn)
         {
             var result = await _foodService.GetMonAnById(maMonAn);
