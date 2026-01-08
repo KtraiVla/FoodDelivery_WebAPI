@@ -33,7 +33,7 @@ namespace FoodService.Services
                     SoDienThoai = row["SoDienThoai"]?.ToString(),
                     HinhAnh = row["HinhAnh"]?.ToString(),
                     MinOrder = Convert.ToInt32(Convert.ToDecimal(row["MinOrder"])),
-                    Macode = row["MaCode"]?.ToString()
+                    MaCode = row["MaCode"]?.ToString()
                 });
             }
 
@@ -52,7 +52,7 @@ namespace FoodService.Services
                     new SqlParameter("@SoDienThoai", nhaHang.SoDienThoai),
                     new SqlParameter("@HinhAnh", nhaHang.HinhAnh),
                     new SqlParameter("@MinOrder", nhaHang.MinOrder),
-                    new SqlParameter("@MaCode", nhaHang.Macode)
+                    new SqlParameter("@MaCode", nhaHang.MaCode)
                 };
 
                 await Task.Run(() =>
@@ -78,23 +78,22 @@ namespace FoodService.Services
             {
                 SqlParameter[] parameters =
                 {
+                    new SqlParameter("@MaNhaHang", nhaHang.MaNhaHang),
                     new SqlParameter("@TenNhaHang", nhaHang.TenNhaHang),
                     new SqlParameter("@DiaChi", nhaHang.DiaChi),
                     new SqlParameter("@SoDienThoai", nhaHang.SoDienThoai),
                     new SqlParameter("@HinhAnh", nhaHang.HinhAnh),
                     new SqlParameter("@MinOrder", nhaHang.MinOrder),
-                    new SqlParameter("@MaCode", nhaHang.Macode)
-            };
+                    new SqlParameter("@MaCode", nhaHang.MaCode)
+                };
 
-                await Task.Run(() =>
-                {
-                    _helper.ExecuteNonQuery("sp_SuaMonAn", parameters);
-                });
+                int rows = _helper.ExecuteNonQuery("sp_SuaNhaHang", parameters);
 
-                return true;
+                return rows > 0;
             }
-            catch
+            catch (Exception ex)
             {
+                // nên log ex.Message
                 return false;
             }
         }
@@ -123,7 +122,7 @@ namespace FoodService.Services
                 SoDienThoai = row["SoDienThoai"]?.ToString(),
                 HinhAnh = row["HinhAnh"]?.ToString(),
                 MinOrder = Convert.ToInt32(Convert.ToDecimal(row["MinOrder"])),
-                Macode = row["MaCode"]?.ToString()
+                MaCode = row["MaCode"]?.ToString()
             };
 
             return Task.FromResult(nhaHang);
@@ -336,9 +335,6 @@ namespace FoodService.Services
             });
         }
 
-        public Task<bool> Update(NhaHang nhaHang)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

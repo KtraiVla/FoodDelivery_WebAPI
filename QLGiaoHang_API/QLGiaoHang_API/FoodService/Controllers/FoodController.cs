@@ -60,15 +60,12 @@ namespace FoodService.Controllers
         [HttpPut("Update-NhaHang")]
         public async Task<IActionResult> UpdateNhaHang([FromBody] NhaHang nhaHang)
         {
-            if (nhaHang == null || nhaHang.MaNhaHang <= 0)
-                return BadRequest("Dữ liệu không hợp lệ");
-
-            var result = await _foodService.Update(nhaHang);
+            bool result = await _foodService.UpdateNhaHang(nhaHang);
 
             if (!result)
-                return StatusCode(500, "Sửa nhà hàng thất bại");
+                return BadRequest("Cập nhật nhà hàng thất bại");
 
-            return Ok("Sửa thông tin nhà hàng thành công");
+            return Ok("Cập nhật nhà hàng thành công");
         }
 
         // ----------------- DANH MỤC -----------------
