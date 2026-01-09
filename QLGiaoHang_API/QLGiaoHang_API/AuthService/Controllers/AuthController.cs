@@ -42,13 +42,25 @@ namespace AuthService.Controllers
         {
             var user = _authService.Login(request);
 
+            if(user == null)
+            {
+                return BadRequest(ApiResponse.Fail("Sai tài khoản hoặc mật khẩu"));
+            }
+
             if( user != null )
             {
                 // thành công
-                return Ok(ApiResponse.Ok(user, "Đăng nhập thành công"));
+                // gọi hàm tạo token 
+                string token = _authService.CreateToken(user);
+                // trả về một object : user + token 
+                var responseData = new
+                {
+                    User = user,
+                    Token = token
+                };
             }
+            return Ok(ApiResponse.Ok(user, "Đăng nhập thành công"));
 
-            return Unauthorized(ApiResponse.Fail("Tài khoản hoặc mật khẩu không chính xác"));
         }
     }
 }

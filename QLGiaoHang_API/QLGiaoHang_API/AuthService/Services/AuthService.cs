@@ -1,9 +1,13 @@
 ﻿using AuthService.DTOs;
 using AuthService.Interfaces;
-using Shared.Helpers;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
+using Shared.Helpers;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace AuthService.Services
 {
@@ -106,11 +110,38 @@ namespace AuthService.Services
         {
             var claims = new List<Claim>
             {
-                           new Claim("MaTK", user.MaTK.ToString()),
-            new Claim(ClaimTypes.Role, user.VaiTro),
-            new Claim("Username", user.UserName)
+                new Claim("MaTK", user.MaTK.ToString()),
+                new Claim(ClaimTypes.Role, user.VaiTro),
+                new Claim("Username", user.Username)
+            };
+
+            // nếu là nhân viên nhà hàng, nhét thêm mã nhà hàng vào token 
+            if (user.MaNhaHang.HasValue)
+            {
+                claims.Add(new Claim("MaNhaHang", user.MaNhaHang.Value.ToString()));
             }
 
+            // lấy secret key từ file cấu hình 
+            var keyString = _configuration["Jwt:Key"];
+            if (string.IsNullOrEmpty(keyString))
+                throw new Exception("Chưa cấu hình Jwt:Key trong appsetting.json");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            // cấu hình token 
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddDays(7), // Token hết hạn sau 7 ngày
+                SigningCredentials = creds,
+                Issuer = _configuration["Jwt:Issuer"],
+                Audience = _configuration["Jwt:Audience"]
+            };
+
+            // 4. Tạo chuỗi Token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
 
 

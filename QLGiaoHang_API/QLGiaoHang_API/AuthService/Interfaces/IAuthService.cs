@@ -10,5 +10,7 @@ namespace AuthService.Interfaces
         // Đăng nhập: Trả về UserDto (hoặc null nếu sai)
         UserDto? Login(LoginRequest request);
 
+        string CreateToken(UserDto user);
+
     }
 }
