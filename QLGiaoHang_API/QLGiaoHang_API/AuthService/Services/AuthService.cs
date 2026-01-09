@@ -3,15 +3,19 @@ using AuthService.Interfaces;
 using Shared.Helpers;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Security.Claims;
 
 namespace AuthService.Services
 {
     public class AuthService : IAuthService
     {
         private readonly SqlHelper _helper;
-        public AuthService(SqlHelper helper)
+        private readonly IConfiguration _configuration; // đọc key trong app setting
+
+        public AuthService(SqlHelper helper, IConfiguration configuration)
         {
             _helper = helper;
+            _configuration = configuration;
         }
 
         //  Đăng ký
@@ -95,6 +99,18 @@ namespace AuthService.Services
             }
 
             return null;
+        }
+
+        // Hàm tạo token từ UserDto
+        public string CreateToken(UserDto user)
+        {
+            var claims = new List<Claim>
+            {
+                           new Claim("MaTK", user.MaTK.ToString()),
+            new Claim(ClaimTypes.Role, user.VaiTro),
+            new Claim("Username", user.UserName)
+            }
+
         }
 
 
