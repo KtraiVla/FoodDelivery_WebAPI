@@ -44,8 +44,23 @@ namespace OrderService.Controllers
             {
                 return BadRequest(ApiResponse.Fail(result.Message));
             }
-            
         }
 
+        [HttpGet("my-order")] // lấy danh sách đơn hàng
+        public IActionResult GetMyOrrder([FromQuery] string? status)
+        {
+            var userId = int.Parse(User.FindFirst("MaTK")?.Value ?? "0");
+            var result = _orderService.GetMyOrders(userId, status);
+            return Ok(ApiResponse.Ok(result));
+        }
+
+        // PUT: api/order/{id}/cancel
+        [HttpPut("{id}/cancel")]
+        public IActionResult CancelOrder(int id)
+        {
+            var userId = int.Parse(User.FindFirst("MaTK")?.Value ?? "0");
+            var result = _orderService.CancelOrder(userId, id);
+            return result.Success ? Ok(ApiResponse.Ok(null, result.Message)) : BadRequest(ApiResponse.Fail(result.Message));
+        }
     }
 }
