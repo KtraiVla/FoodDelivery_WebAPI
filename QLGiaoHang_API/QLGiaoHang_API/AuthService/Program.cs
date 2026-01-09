@@ -1,6 +1,9 @@
 ﻿using AuthService.Interfaces;
 using AuthService.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Shared.Helpers;
+using System.Text;
 
 namespace AuthService
 {
@@ -27,6 +30,29 @@ namespace AuthService
             // đăng ký AccountService
             builder.Services.AddScoped<IAccountService, AuthService.Services.AccountService>();
 
+            // ====================================================
+            // 3. CẤU HÌNH JWT (Để dùng được [Authorize])
+            // ====================================================
+            var jwtSettings = builder.Configuration.GetSection("Jwt");
+            var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
