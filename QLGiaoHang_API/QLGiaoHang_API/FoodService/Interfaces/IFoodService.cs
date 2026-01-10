@@ -23,6 +23,5 @@ namespace FoodService.Interfaces
         Task<bool> Update(MonAn monAn);
         Task<bool> Delete(int maMonAn);
         
-
     }
 }

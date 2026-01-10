@@ -33,55 +33,71 @@ namespace FoodService.Services
                     SoDienThoai = row["SoDienThoai"]?.ToString(),
                     HinhAnh = row["HinhAnh"]?.ToString(),
                     MinOrder = Convert.ToInt32(Convert.ToDecimal(row["MinOrder"])),
-                    Macode = row["MaCode"]?.ToString()
+                    MaCode = row["MaCode"]?.ToString()
                 });
             }
 
             return Task.FromResult(list);
         }
         // Thêm nhà hàng
-        public Task<bool> CreateNhaHang(NhaHang nhaHang)
+       
+        public async Task<bool> CreateNhaHang(NhaHang nhaHang)
         {
-            SqlParameter[] parameters =
+            try
             {
-                new SqlParameter("@TenNhaHang", nhaHang.TenNhaHang),
-                new SqlParameter("@DiaChi", nhaHang.DiaChi),
-                new SqlParameter("@SoDienThoai", nhaHang.SoDienThoai),
-                new SqlParameter("@HinhAnh", nhaHang.HinhAnh),
-                new SqlParameter("@MinOrder", nhaHang.MinOrder),
-                new SqlParameter("@MaCode", nhaHang.Macode)
-            };
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@TenNhaHang", nhaHang.TenNhaHang),
+                    new SqlParameter("@DiaChi", nhaHang.DiaChi),
+                    new SqlParameter("@SoDienThoai", nhaHang.SoDienThoai),
+                    new SqlParameter("@HinhAnh", nhaHang.HinhAnh),
+                    new SqlParameter("@MinOrder", nhaHang.MinOrder),
+                    new SqlParameter("@MaCode", nhaHang.MaCode)
+                };
 
-            int result = _helper.ExecuteNonQuery("sp_ThemNhaHang", parameters);
+                await Task.Run(() =>
+                {
+                    _helper.ExecuteNonQuery("sp_ThemNhaHang", parameters);
+                });
 
-            return Task.FromResult(result > 0);
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627 || ex.Number == 2601)
+                    throw new Exception("Tên nhà hàng đã tồn tại");
+
+                throw;
+            }
         }
 
-        //public Task<NhaHang?> GetNhaHangById(int maNhaHang)
-        //{
-        //    SqlParameter[] parameters =
-        //    {
-        //        new SqlParameter("@MaNhaHang", maNhaHang)
-        //    };
+        // Sửa nhà hàng
+        public async Task<bool> UpdateNhaHang(NhaHang nhaHang)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@MaNhaHang", nhaHang.MaNhaHang),
+                    new SqlParameter("@TenNhaHang", nhaHang.TenNhaHang),
+                    new SqlParameter("@DiaChi", nhaHang.DiaChi),
+                    new SqlParameter("@SoDienThoai", nhaHang.SoDienThoai),
+                    new SqlParameter("@HinhAnh", nhaHang.HinhAnh),
+                    new SqlParameter("@MinOrder", nhaHang.MinOrder),
+                    new SqlParameter("@MaCode", nhaHang.MaCode)
+                };
 
-        //    DataTable dt = _helper.ExecuteQuery("sp_GetNhaHangById", parameters);
+                int rows = _helper.ExecuteNonQuery("sp_SuaNhaHang", parameters);
 
-        //    if (dt.Rows.Count == 0)
-        //        return Task.FromResult<NhaHang?>(null);
+                return rows > 0;
+            }
+            catch (Exception ex)
+            {
+                // nên log ex.Message
+                return false;
+            }
+        }
 
-        //    DataRow row = dt.Rows[0];
-
-        //    return Task.FromResult(new NhaHang
-        //    {
-        //        MaNhaHang = Convert.ToInt32(row["MaNhaHang"]),
-        //        TenNhaHang = row["TenNhaHang"].ToString(),
-        //        DiaChi = row["DiaChi"].ToString(),
-        //        SoDienThoai = row["SoDienThoai"].ToString(),
-        //        HinhAnh = row["HinhAnh"].ToString(),
-        //        MinOrder = Convert.ToInt32(row["MinOrder"]),
-        //        Macode = row["MaCode"].ToString()
-        //    });
-        //}
 
         // tìm nhà hàng
         public Task<NhaHang?> GetNhaHangById(int maNhaHang)
@@ -106,7 +122,7 @@ namespace FoodService.Services
                 SoDienThoai = row["SoDienThoai"]?.ToString(),
                 HinhAnh = row["HinhAnh"]?.ToString(),
                 MinOrder = Convert.ToInt32(Convert.ToDecimal(row["MinOrder"])),
-                Macode = row["MaCode"]?.ToString()
+                MaCode = row["MaCode"]?.ToString()
             };
 
             return Task.FromResult(nhaHang);
@@ -192,14 +208,14 @@ namespace FoodService.Services
             {
                 SqlParameter[] parameters =
                 {
-                new SqlParameter("@MaMonAn", monAn.MaMonAn),
-                new SqlParameter("@TenMon", monAn.TenMon),
-                new SqlParameter("@Gia", monAn.Gia),
-                new SqlParameter("@MoTa", monAn.MoTa),
-                new SqlParameter("@HinhAnh", monAn.HinhAnh),
-                new SqlParameter("@MaDanhMuc", monAn.MaDanhMuc),
-                new SqlParameter("@MaNhaHang", monAn.MaNhaHang)
-            };
+                    new SqlParameter("@MaMonAn", monAn.MaMonAn),
+                    new SqlParameter("@TenMon", monAn.TenMon),
+                    new SqlParameter("@Gia", monAn.Gia),
+                    new SqlParameter("@MoTa", monAn.MoTa),
+                    new SqlParameter("@HinhAnh", monAn.HinhAnh),
+                    new SqlParameter("@MaDanhMuc", monAn.MaDanhMuc),
+                    new SqlParameter("@MaNhaHang", monAn.MaNhaHang)
+                };
 
                 await Task.Run(() =>
                 {
@@ -319,9 +335,6 @@ namespace FoodService.Services
             });
         }
 
-        public Task<bool> UpdateNhaHang(NhaHang nhaHang)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

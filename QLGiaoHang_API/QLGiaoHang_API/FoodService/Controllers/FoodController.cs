@@ -20,7 +20,7 @@ namespace FoodService.Controllers
         
         /// Lấy danh sách tất cả nhà hàng
         
-        [HttpGet("nhahang")]
+        [HttpGet("GetAll-NhaHang")]
         public async Task<IActionResult> GetAllNhaHang()
         {
             var result = await _foodService.GetAllNhaHang();
@@ -30,7 +30,7 @@ namespace FoodService.Controllers
         
         /// Lấy thông tin nhà hàng theo ID
         
-        [HttpGet("nhahang/{maNhaHang}")]
+        [HttpGet("GetID-NhaHang/{maNhaHang}")]
         public async Task<IActionResult> GetNhaHangById(int maNhaHang)
         {
             var result = await _foodService.GetNhaHangById(maNhaHang);
@@ -56,12 +56,24 @@ namespace FoodService.Controllers
             return Ok("Thêm nhà hàng thành công");
         }
 
+        // Sửa nhà hàng
+        [HttpPut("Update-NhaHang")]
+        public async Task<IActionResult> UpdateNhaHang([FromBody] NhaHang nhaHang)
+        {
+            bool result = await _foodService.UpdateNhaHang(nhaHang);
+
+            if (!result)
+                return BadRequest("Cập nhật nhà hàng thất bại");
+
+            return Ok("Cập nhật nhà hàng thành công");
+        }
+
         // ----------------- DANH MỤC -----------------
 
 
         /// Lấy tất cả danh mục
 
-        [HttpGet("danhmuc")]
+        [HttpGet("GetAll-danhmuc")]
         public async Task<IActionResult> GetAllDanhMuc()
         {
             var result = await _foodService.GetAllDanhMuc();
@@ -103,7 +115,7 @@ namespace FoodService.Controllers
        
         /// Lấy chi tiết món ăn theo ID
         
-        [HttpGet("monan/{maMonAn}")]
+        [HttpGet("GetAll-monan/{maMonAn}")]
         public async Task<IActionResult> GetMonAnById(int maMonAn)
         {
             var result = await _foodService.GetMonAnById(maMonAn);
