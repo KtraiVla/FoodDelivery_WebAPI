@@ -93,8 +93,9 @@ namespace FoodService.Services
             }
             catch (Exception ex)
             {
+                throw new Exception(ex.Message);
                 // nên log ex.Message
-                return false;
+                
             }
         }
 

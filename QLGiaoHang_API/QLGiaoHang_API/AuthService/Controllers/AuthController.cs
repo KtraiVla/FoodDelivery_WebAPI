@@ -41,26 +41,20 @@ namespace AuthService.Controllers
         public IActionResult Login([FromBody] LoginRequest request)
         {
             var user = _authService.Login(request);
+            if (user == null) return BadRequest(ApiResponse.Fail("Sai tài khoản hoặc mật khẩu"));
 
-            if(user == null)
+            // 1. Tạo Token
+            string token = _authService.CreateToken(user);
+
+            // 2. Đóng gói (User + Token)
+            var responseData = new
             {
-                return BadRequest(ApiResponse.Fail("Sai tài khoản hoặc mật khẩu"));
-            }
+                User = user,   // <-- Thông tin người dùng
+                Token = token  // <-- Chuỗi Token quan trọng đây
+            };
 
-            if( user != null )
-            {
-                // thành công
-                // gọi hàm tạo token 
-                string token = _authService.CreateToken(user);
-                // trả về một object : user + token 
-                var responseData = new
-                {
-                    User = user,
-                    Token = token
-                };
-            }
-            return Ok(ApiResponse.Ok(user, "Đăng nhập thành công"));
-
+            // 3. TRẢ VỀ responseData (CHỨ KHÔNG PHẢI user)
+            return Ok(ApiResponse.Ok(responseData, "Đăng nhập thành công"));
         }
     }
 }

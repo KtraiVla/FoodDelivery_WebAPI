@@ -18,7 +18,7 @@ namespace OrderService.Controllers
             _orderService = orderService;
         }
 
-        [HttpPost("checkout")]
+        [HttpPost("taodonhang")]
         public IActionResult CreateOrder([FromBody] CreateOrderRequest request)
         {
             // lấy userid từ token (để biết ai đăng đặt)
@@ -46,7 +46,7 @@ namespace OrderService.Controllers
             }
         }
 
-        [HttpGet("my-order")] // lấy danh sách đơn hàng
+        [HttpGet("laydanhsachdonhang")] // lấy danh sách đơn hàng
         public IActionResult GetMyOrrder([FromQuery] string? status)
         {
             var userId = int.Parse(User.FindFirst("MaTK")?.Value ?? "0");
@@ -55,7 +55,7 @@ namespace OrderService.Controllers
         }
 
         // PUT: api/order/{id}/cancel
-        [HttpPut("{id}/cancel")]
+        [HttpPut("{id}/huydonhangdat")]
         public IActionResult CancelOrder(int id)
         {
             var userId = int.Parse(User.FindFirst("MaTK")?.Value ?? "0");
